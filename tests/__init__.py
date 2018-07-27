@@ -1,8 +1,8 @@
 import os
 
 get_test_fpath = lambda x: os.path.join(os.path.dirname(__file__), 'inputs', x)
-get_tmp_fpath = lambda x: os.path.join(os.path.dirname(__file__), 'tmp', x)
-
+get_tmp_fpath = lambda x='': os.path.join(os.path.dirname(__file__), 'tmp', x)
+if not os.path.isdir(get_tmp_fpath()): os.mkdir(get_tmp_fpath())
 
 def clean_tmp_files(*fnames):
     """
@@ -16,7 +16,3 @@ def clean_tmp_files(*fnames):
     for fname in fnames:
         fpath = get_tmp_fpath(fname)
         os.remove(fpath)
-
-if __name__ == '__main__':
-    p=1
-    o=3

@@ -69,6 +69,9 @@ class WAsP_Line:
         self.n_points = n_points
         self.coordinates = []
 
+    def __repr__(self):
+        return f"WAsP_Line(r_left={self.r_left}, r_right={self.r_right}, elev={self.elev}, n_points={self.n_points})"
+
     @classmethod
     def from_metadata_string(cls, metadata_str: str) -> object:
         self = cls()
