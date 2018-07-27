@@ -13,7 +13,7 @@ class WAsP_Map:
 
     @classmethod
     def from_file(cls, fpath: str):
-        """Reads and parses the WAsP map into """
+        """Reads and parses the WAsP map into this object"""
         with open(fpath, 'r') as f:
             content = f.readlines()
 
@@ -36,15 +36,23 @@ class WAsP_Map:
         return self
 
     def _get_map_string(self, *args, **kwargs) -> str:
+        """Converts the information in the object to string, ready to be output to file"""
         body_str = ''.join([l.to_str(*args, **kwargs) for l in self.lines])
         return self.header + body_str
 
-    def save(self, fpath: str, *args, **kwargs):
+    def save(self, fpath: str, elevation=True, roughness=True):
+        """
+        Saves the information to the specified location in WAsP map format
+        :param fpath: location where the file will be written
+        :param elevation: boolean flag, True allows the elevation information to be saved
+        :param roughness: boolean flag, True allows the roughness information to be saved
+        """
         with open(fpath, 'w') as f:
-            f.write(self._get_map_string(*args, **kwargs))
+            f.write(self._get_map_string(elevation=elevation, roughness=roughness))
 
     @property
     def extent(self):
+        """Calculates the extent of the map. Returns a namedtuple with min_x, max_x, min_y and max_y"""
         if not self.lines: return None
 
         min_x, max_x, min_y, max_y = self.lines[0].extent
@@ -74,6 +82,8 @@ class WAsP_Line:
 
     @classmethod
     def from_metadata_string(cls, metadata_str: str) -> object:
+        """Extracts the line metadata (roughnesses, elevation and number of points) from the metadata
+        string coming from the map file"""
         self = cls()
 
         metadata = metadata_str.split()
@@ -90,12 +100,14 @@ class WAsP_Line:
         return self
 
     def add_coordinates_from_string(self, s: str) -> int:
+        """Adds points coordinates as found in the string from the file to this object"""
         coords = s.split()
         pairs = [(float(i), float(j)) for i, j in zip(coords[::2], coords[1::2])]
         self.coordinates.extend(pairs)
         return len(pairs)
 
     def to_str(self, elevation=True, roughness=True) -> str:
+        """Converts the line information to string, ready to be written file"""
         has_something_to_write = (elevation and self.elev is not None) or (roughness and self.r_left is not None)
         if not has_something_to_write: return ''
 
@@ -112,6 +124,7 @@ class WAsP_Line:
 
     @property
     def extent(self):
+        """Calculates the extent of the line. Returns a namedtuple with min_x, max_x, min_y and max_y"""
         if not self.coordinates: return None
 
         min_x, max_x = self.coordinates[0][0], self.coordinates[0][0]
