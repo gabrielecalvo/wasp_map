@@ -1,3 +1,6 @@
+[![GitHub](https://img.shields.io/github/license/gabrielecalvo/wasp_map.svg)](https://github.com/gabrielecalvo/wasp_map/blob/master/LICENSE)
+
+
 # Wasp Map
 Library that lets you load WAsP maps into python objects and apply transformation in the python environment.
 
