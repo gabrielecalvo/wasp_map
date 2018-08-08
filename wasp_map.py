@@ -112,8 +112,8 @@ class WAsP_Line:
         if not has_something_to_write: return ''
 
         line_string = ' ' * 4
-        if self.r_left and roughness: line_string += f"{self.r_left:<10} {self.r_right:<10} "
-        if self.elev and elevation: line_string += f"{self.elev:<10} "
+        if self.r_left is not None and roughness: line_string += f"{self.r_left:<10} {self.r_right:<10} "
+        if self.elev is not None and elevation: line_string += f"{self.elev:<10} "
         line_string += f"{self.n_points}\n"
 
         for i in range(0, len(self.coordinates), 4):
